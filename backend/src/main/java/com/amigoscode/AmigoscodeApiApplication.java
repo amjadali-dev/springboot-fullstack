@@ -16,7 +16,6 @@ public class AmigoscodeApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AmigoscodeApiApplication.class, args);
-
 	}
 
 	@Bean
