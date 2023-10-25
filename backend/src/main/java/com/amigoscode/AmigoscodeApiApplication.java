@@ -14,24 +14,27 @@ import java.util.Random;
 @SpringBootApplication
 public class AmigoscodeApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AmigoscodeApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AmigoscodeApiApplication.class, args);
+    }
 
-	@Bean
-	CommandLineRunner runner(CustomerRepository customerRepository) {
-		return args -> {
-			var faker = new Faker();
-			Random random = new Random();
-			Name name = faker.name();
-			String firstName = name.firstName();
-			String lastName = name.lastName();
-			Customer customer = new Customer(
-					firstName +  " " + lastName,
-					firstName.toLowerCase() + "." + lastName.toLowerCase() + "@amigoscode.com",
-					random.nextInt(16, 99)
-			);
-			customerRepository.save(customer);
-		};
-	}
+    @Bean
+    CommandLineRunner runner(CustomerRepository customerRepository) {
+        return args -> {
+            var faker = new Faker();
+            Random random = new Random();
+            Name name = faker.name();
+            String firstName = name.firstName();
+            String lastName = name.lastName();
+            String gender = (new Random().nextInt() % 2 == 0) ?
+                    "male" : "female";
+
+            Customer customer = new Customer(
+                    firstName + " " + lastName,
+                    firstName.toLowerCase() + "." + lastName.toLowerCase() + "@amigoscode.com",
+                    random.nextInt(16, 99), gender
+            );
+            customerRepository.save(customer);
+        };
+    }
 }

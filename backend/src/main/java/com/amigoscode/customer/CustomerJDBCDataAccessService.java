@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                SELECT id, name, email, age
+                SELECT id, name, email, age, gender
                 FROM customer
                 """;
 

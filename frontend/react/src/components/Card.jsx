@@ -14,7 +14,8 @@ import {
     Tag,
 } from '@chakra-ui/react'
 
-export default function CardWithImage({ id, name, email, age }) {
+export default function CardWithImage({ id, name, email, age, gender }) {
+    const profileImageUrl=getProfileUrl(id,gender)
     return (
         <Center py={6}>
             <Box
@@ -37,7 +38,7 @@ export default function CardWithImage({ id, name, email, age }) {
                     <Avatar
                         size={'xl'}
                         src={
-                            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
+                            profileImageUrl
                         }
                         css={{
                             border: '2px solid white',
@@ -52,10 +53,31 @@ export default function CardWithImage({ id, name, email, age }) {
                             {name}
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
-                        <Text color={'gray.500'}>{age}</Text>
+                        <Text color={'gray.500'}>{age} | | {gender}</Text>
+                        <Text color={'gray.500'}></Text>
                     </Stack>
                 </Box>
             </Box>
         </Center>
     )
+}
+
+const convertGenderToSex = (gender) => {
+    gender=gender.toLowerCase()
+    console.log("gender :"+gender)
+    
+    if (gender=== "male") {
+        return 'men'
+    }
+
+    if (gender === "female") {
+        return 'women'
+    }
+}
+
+const getProfileUrl=(id,gender)=>{
+    const sex=convertGenderToSex(gender)
+    const url=`https://randomuser.me/api/portraits/med/${sex}/${id}.jpg`
+    console.log("url: "+url)
+    return url
 }

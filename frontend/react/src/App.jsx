@@ -21,7 +21,6 @@ const App = () => {
         })
     }, [])
 
-
     //return this html when api is loading
     if (loading) {
         return (
@@ -53,7 +52,7 @@ const App = () => {
         <SidebarWithHeader>
             <Wrap spacing="7" justify="center">
                 {customers.map((customer, index) =>
-                    <WrapItem>
+                    <WrapItem key={index}>
                         <CardWithImage
                             {...customer}
                         />
