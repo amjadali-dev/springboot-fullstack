@@ -1,8 +1,9 @@
 import { Button, ButtonGroup, Spinner, Text, Wrap, WrapItem } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
 import { getCustomers } from './services/client';
-import SidebarWithHeader from './components/shared/sidebar';
+import SidebarWithHeader from './components/shared/Sidebar';
 import CardWithImage from './components/Card';
+import CreateCustomerDrawer from './components/CreateCustomerDrawer';
 
 
 const App = () => {
@@ -10,7 +11,8 @@ const App = () => {
     const [customers, setCustomers] = useState([])
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const fetchCustomers = () => {
+        console.log("running fetchCustomers")
         setLoading(true);
         getCustomers().then(res => {
             setCustomers(res.data)
@@ -19,6 +21,10 @@ const App = () => {
         }).finally(() => {
             setLoading(false)
         })
+    }
+
+    useEffect(() => {
+        fetchCustomers()
     }, [])
 
     //return this html when api is loading
@@ -40,7 +46,10 @@ const App = () => {
     if (customers.length === 0) {
         return (
             <SidebarWithHeader>
-                <Text>
+                <CreateCustomerDrawer 
+                  fetchCustomers={fetchCustomers}
+                />
+                <Text mt={3}>
                     No customers available
                 </Text>
             </SidebarWithHeader>
@@ -50,15 +59,22 @@ const App = () => {
     //return this html otherwise(after sueccesfully getting response from api with more than zero customers)
     return (
         <SidebarWithHeader>
+            <CreateCustomerDrawer
+                fetchCustomers={fetchCustomers}
+            />
+
+
             <Wrap spacing="7" justify="center">
                 {customers.map((customer, index) =>
                     <WrapItem key={index}>
                         <CardWithImage
                             {...customer}
+                            fetchCustomers={fetchCustomers}
                         />
                     </WrapItem>
                 )}
             </Wrap>
+
         </SidebarWithHeader>
     )
 }

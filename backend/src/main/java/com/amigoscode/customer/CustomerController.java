@@ -39,7 +39,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("{customerId}")
-    public void deleteCustomer(
+    public void                                            delwseteCustomer(
             @PathVariable("customerId") Integer customerId) {
         customerService.deleteCustomerById(customerId);
     }

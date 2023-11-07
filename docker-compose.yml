@@ -15,15 +15,28 @@ services:
     restart: unless-stopped
   amigoscode-api:
     container_name: amigoscode-api
-    image: amjaddocker17/test:latest
+    image: amjaddocker17/backend-1:latest
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
     ports:
       - "8088:8080"
     networks:
       - db
     depends_on:
       - db
+    restart: unless-stopped
+
+  frontend-react:
+    container_name: frontend-react
+    image: amjaddocker17/frontend-react:latest
+    build: 
+      context: frontend/react
+      args:
+        API_BASE_URL: http://localhost:8088
+    ports:
+      - "3000:5173"
+    depends_on:
+      - amigoscode-api
     restart: unless-stopped
 
 networks:

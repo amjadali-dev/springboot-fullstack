@@ -12,14 +12,17 @@ import {
     Button,
     useColorModeValue,
     Tag,
+    HStack,
 } from '@chakra-ui/react'
+import DeleteCustomerAlert from './AlertDialogue'
+import UpdateCustomerDrawer from './UpdateCustomerDrawer'
 
-export default function CardWithImage({ id, name, email, age, gender }) {
-    const profileImageUrl=getProfileUrl(id,gender)
+export default function CardWithImage({ id, name, email, age, gender, fetchCustomers }) {
+    const profileImageUrl = getProfileUrl(id, gender)
     return (
         <Center py={6}>
             <Box
-                maxW={'250px'}
+                maxW={'300px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.800')}
                 boxShadow={'2xl'}
@@ -54,19 +57,37 @@ export default function CardWithImage({ id, name, email, age, gender }) {
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
                         <Text color={'gray.500'}>{age} | | {gender}</Text>
-                        <Text color={'gray.500'}></Text>
                     </Stack>
                 </Box>
+                <HStack align={'center'} mb={5} justify={'center'}>
+                    <DeleteCustomerAlert
+                        id={id}
+                        fetchCustomers={fetchCustomers}
+                    >
+                    </DeleteCustomerAlert>
+                    <UpdateCustomerDrawer
+                        initialValues={{
+                            id: id,
+                            name: name,
+                            email: email,
+                            age: age
+                        }
+                        }
+                        fetchCustomers={fetchCustomers}
+                    >
+                    </UpdateCustomerDrawer>
+                </HStack>
+
             </Box>
         </Center>
     )
 }
 
 const convertGenderToSex = (gender) => {
-    gender=gender.toLowerCase()
-    console.log("gender :"+gender)
-    
-    if (gender=== "male") {
+    gender = gender.toLowerCase()
+    console.log("gender :" + gender)
+
+    if (gender === "male") {
         return 'men'
     }
 
@@ -75,9 +96,9 @@ const convertGenderToSex = (gender) => {
     }
 }
 
-const getProfileUrl=(id,gender)=>{
-    const sex=convertGenderToSex(gender)
-    const url=`https://randomuser.me/api/portraits/med/${sex}/${id}.jpg`
-    console.log("url: "+url)
+const getProfileUrl = (id, gender) => {
+    const sex = convertGenderToSex(gender)
+    const url = `https://randomuser.me/api/portraits/med/${sex}/${id}.jpg`
+    console.log("url: " + url)
     return url
 }
