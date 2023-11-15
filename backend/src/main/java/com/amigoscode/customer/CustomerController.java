@@ -1,5 +1,8 @@
 package com.amigoscode.customer;
 
+import com.amigoscode.jwt.JWTUtil;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/customers")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final JWTUtil jwtUtil;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
         this.customerService = customerService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -33,9 +38,22 @@ public class CustomerController {
     }
 
     @PostMapping
-    public void registerCustomer(
+    public ResponseEntity<?> registerCustomer(
             @RequestBody CustomerRegistrationRequest request) {
+        System.out.println("running customer registration");
         customerService.addCustomer(request);
+        String jwtToken = jwtUtil.issueToken(request.email(), "ROLE_USER");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .build();
+    }
+    @PostMapping("/test")
+    public ResponseEntity<?> registerCustomer1(
+            @RequestBody CustomerRegistrationRequest request) {
+        System.out.println("**********************************");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "*******************")
+                .build();
     }
 
     @DeleteMapping("{customerId}")

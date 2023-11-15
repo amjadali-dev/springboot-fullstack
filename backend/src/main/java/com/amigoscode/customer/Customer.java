@@ -2,12 +2,21 @@ package com.amigoscode.customer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(
@@ -16,10 +25,14 @@ import jakarta.persistence.UniqueConstraint;
                 @UniqueConstraint(
                         name = "customer_email_unique",
                         columnNames = "email"
+                ),
+                @UniqueConstraint(
+                        name = "profile_image_id_unique",
+                        columnNames = "profileImageId"
                 )
         }
 )
-public class Customer {
+public class Customer implements UserDetails {
 
     @Id
     @SequenceGenerator(
@@ -46,38 +59,57 @@ public class Customer {
     private Integer age;
 
     @Column(
-            nullable = false,columnDefinition = "varchar(255) default 'male'"
+            nullable = false
     )
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(
+            nullable = false
+    )
+    private String password;
+
+    @Column(
+            unique = true
+    )
+    private String profileImageId;
 
     public Customer() {
     }
 
-    public Customer(Integer id, String name, String email, Integer age) {
+    public Customer(Integer id,
+                    String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.age = age;
+        this.gender = gender;
     }
 
-    public Customer(Integer id, String name, String email, Integer age,String gender) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.gender=gender;
+    public Customer(Integer id,
+                    String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Gender gender,
+                    String profileImageId) {
+        this(id, name, email, password, age, gender);
+        this.profileImageId = profileImageId;
     }
 
-
-    public Customer(String name, String email, Integer age) {
+    public Customer(String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Gender gender) {
         this.name = name;
         this.email = email;
-        this.age = age;
-    }
-
-    public Customer(String name, String email, Integer age, String gender) {
-        this.name = name;
-        this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
     }
@@ -114,13 +146,81 @@ public class Customer {
         this.age = age;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
+    public String getProfileImageId() {
+        return profileImageId;
+    }
+
+    public void setProfileImageId(String profileImageId) {
+        this.profileImageId = profileImageId;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && gender == customer.gender && Objects.equals(password, customer.password) && Objects.equals(profileImageId, customer.profileImageId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, age, gender, password, profileImageId);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
+                ", password='" + password + '\'' +
+                ", profileImageId='" + profileImageId + '\'' +
+                '}';
+    }
 
 }

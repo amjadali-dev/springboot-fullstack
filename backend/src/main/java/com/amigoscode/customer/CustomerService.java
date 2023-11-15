@@ -4,6 +4,7 @@ import com.amigoscode.exception.DuplicateResourceException;
 import com.amigoscode.exception.RequestValidationException;
 import com.amigoscode.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerDao customerDao;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao, PasswordEncoder passwordEncoder) {
         this.customerDao = customerDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Customer> getAllCustomers() {
@@ -41,10 +44,9 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
+                passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
-                customerRegistrationRequest.gender()
-        );
-
+                Gender.valueOf(customerRegistrationRequest.gender()));
         customerDao.insertCustomer(customer);
     }
 
@@ -85,13 +87,13 @@ public class CustomerService {
             changes = true;
         }
 
-        if (updateRequest.gender()!= null && !updateRequest.gender().equals(customer.getGender())) {
-            customer.setGender(updateRequest.gender());
+        if (updateRequest.gender() != null && !updateRequest.gender().equals(customer.getGender())) {
+            customer.setGender(Gender.valueOf(updateRequest.gender()));
             changes = true;
         }
 
         if (!changes) {
-           throw new RequestValidationException("no data changes found");
+            throw new RequestValidationException("no data changes found");
         }
 
         customerDao.updateCustomer(customer);
