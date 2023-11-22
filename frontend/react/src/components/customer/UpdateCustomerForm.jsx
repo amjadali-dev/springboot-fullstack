@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
-import { updateCustomer } from '../services/client';
+import { updateCustomer } from '../../services/client';
 import { Alert, AlertIcon, Button, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
 
 const MyTextInput = ({ label, ...props }) => {

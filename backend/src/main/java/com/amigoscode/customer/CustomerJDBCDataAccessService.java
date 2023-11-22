@@ -123,7 +123,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
             String sql = "UPDATE customer SET gender = ? WHERE id = ?";
             int result = jdbcTemplate.update(
                     sql,
-                    update.getGender(),
+                    update.getGender().name(),
                     update.getId());
             System.out.println("update customer gender result = " + result);
         }

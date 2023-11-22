@@ -16,6 +16,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleException(ResourceNotFoundException e,
                                                     HttpServletRequest request) {
+        e.printStackTrace();
         ApiError apiError = new ApiError(
                 request.getRequestURI(),
                 e.getMessage(),
@@ -29,6 +30,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public ResponseEntity<ApiError> handleException(InsufficientAuthenticationException e,
                                                     HttpServletRequest request) {
+        e.printStackTrace();
         ApiError apiError = new ApiError(
                 request.getRequestURI(),
                 e.getMessage(),
@@ -41,7 +43,9 @@ public class DefaultExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError> handleException(BadCredentialsException e,
+
                                                     HttpServletRequest request) {
+        e.printStackTrace();
         ApiError apiError = new ApiError(
                 request.getRequestURI(),
                 e.getMessage(),
@@ -55,6 +59,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleException(Exception e,
                                                     HttpServletRequest request) {
+        e.printStackTrace();
         ApiError apiError = new ApiError(
                 request.getRequestURI(),
                 e.getMessage(),

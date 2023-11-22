@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
-import { saveCustomer } from '../services/client';
+import { saveCustomer } from '../../services/client';
 
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -46,12 +46,15 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
     return (
         <>
             <Formik
+
                 initialValues={{
                     name: '',
                     age: 0,
                     email: '',
                     gender: '',
+                    password: ''
                 }}
+
                 validationSchema={Yup.object({
                     name: Yup.string()
                         .max(15, 'Must be 15 characters or less')
@@ -63,6 +66,10 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                     email: Yup.string()
                         .email('Invalid email address')
                         .required('Required'),
+                    password: Yup.string()
+                        .min(4, "Must be 4 characters or more")
+                        .max(15, 'Must be 15 characters or less')
+                        .required('Required'),
                     gender: Yup.string()
                         .oneOf(
                             ['Male', 'Female'],
@@ -70,11 +77,12 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                         )
                         .required('Required'),
                 })}
+
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true)
                     saveCustomer(values)
                         .then(result => {
-                            
+
                             console.log(result.data)
                             fetchCustomers()
                         })
@@ -106,11 +114,19 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                                     type="email"
                                     placeholder="jane@formik.com"
                                 />
+
+                                <MyTextInput
+                                    label="Password"
+                                    name="password"
+                                    type="password"
+                                    placeholder={"Pick a secure password"}
+                                />
+
                                 <MySelect label="Gender" name="gender">
                                     <option value="">Select a Gender</option>
                                     <option value="Male">MALE</option>
                                     <option value="Female">FEMALE</option>
-                                  
+
                                 </MySelect>
 
                                 <Button isDisabled={!isValid || isSubmitting} type="submit">Submit</Button>

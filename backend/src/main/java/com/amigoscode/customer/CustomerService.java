@@ -46,7 +46,7 @@ public class CustomerService {
                 customerRegistrationRequest.email(),
                 passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
-                Gender.valueOf(customerRegistrationRequest.gender()));
+                Gender.valueOf(customerRegistrationRequest.gender().toUpperCase()));
         customerDao.insertCustomer(customer);
     }
 

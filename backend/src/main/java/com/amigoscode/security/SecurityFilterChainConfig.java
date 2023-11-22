@@ -38,7 +38,8 @@ public class SecurityFilterChainConfig {
         http.csrf((csrf) -> csrf.disable());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers(HttpMethod.POST, "/api/v1/**", "/api/v1/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/**", "/api/v1/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET,"/ping").permitAll()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session

@@ -2,8 +2,8 @@ import { Button, ButtonGroup, Spinner, Text, Wrap, WrapItem } from '@chakra-ui/r
 import { useEffect, useState } from 'react';
 import { getCustomers } from './services/client';
 import SidebarWithHeader from './components/shared/Sidebar';
-import CardWithImage from './components/Card';
-import CreateCustomerDrawer from './components/CreateCustomerDrawer';
+import CardWithImage from './components/customer/Card';
+import CreateCustomerDrawer from './components/customer/CreateCustomerDrawer';
 
 
 const App = () => {

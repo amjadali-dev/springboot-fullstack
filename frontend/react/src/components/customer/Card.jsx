@@ -14,7 +14,7 @@ import {
     Tag,
     HStack,
 } from '@chakra-ui/react'
-import DeleteCustomerAlert from './AlertDialogue'
+import DeleteCustomerAlert from '../AlertDialogue'
 import UpdateCustomerDrawer from './UpdateCustomerDrawer'
 
 export default function CardWithImage({ id, name, email, age, gender, fetchCustomers }) {
