@@ -15,19 +15,7 @@
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://awseb-e-7pgt9bgqjt-stack-awsebrdsdatabase-tyfutzfahses.csalvycnwswm.us-east-1.rds.amazonaws.com:5432/postgres"
-        }
-      ]
-    },
-    {
-      "name": "fullstack-professional-frontend-react",
-      "image": "amjaddocker17/frontend-react-1:latest",
-      "essential": true,
-      "memory": 256,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 5173
+          "value": "jdbc:postgresql://awseb-e-jsg73zgmbc-stack-awsebrdsdatabase-hew2ffcg6nhv.csalvycnwswm.us-east-1.rds.amazonaws.com:5432/postgres"
         }
       ]
     }

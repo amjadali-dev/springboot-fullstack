@@ -6,8 +6,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/customer
-    username: amigoscode
-    password: password
+    username: postgres
+    password: password123
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,7 +20,9 @@ spring:
     web-application-type: servlet
 
 cors:
-  allowed-origins: "http://localhost:5173,http://localhost:3000,http://fullstack-dev.us-east-1.elasticbeanstalk.com"
+#  allowed-origins: "http://localhost:5173,http://localhost:3000,http://fullstack-dev.us-east-1.elasticbeanstalk.com"
+  allowed-origins: "*"
   allowed-methods: "*"
   allowed-headers: "*"
   exposed-headers: "*"
+

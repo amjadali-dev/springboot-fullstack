@@ -5,8 +5,8 @@ import './index.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import AuthProvider from './components/context/AuthContext.jsx'
-import Login from './components/login/login.jsx'
 import ProtectedRoute from './components/shared/ProtectedRoute.jsx'
+import Login from './components/login/Login.jsx'
 
 const router = createBrowserRouter([
   {

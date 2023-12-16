@@ -40,6 +40,7 @@ public class SecurityFilterChainConfig {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST,"/api/v1/**", "/api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/ping").permitAll()
+                .requestMatchers(HttpMethod.GET,"/actuator/**").permitAll()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session
